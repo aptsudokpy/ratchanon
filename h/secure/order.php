@@ -1,0 +1,174 @@
+<?php
+    include_once("check_login.php");
+?>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการออร์เดอร์: รัชชานนท์ พรดีมา (นิวเคลียร์)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            margin: 20px;
+            min-height: calc(100vh - 40px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.5);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 2rem 1rem;
+        }
+
+        .menu-item {
+            text-decoration: none;
+            color: #555;
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .menu-item i { margin-right: 15px; font-size: 1.2rem; }
+
+        .menu-item:hover, .menu-item.active {
+            background: white;
+            color: #4158D0;
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Content Area */
+        .content-area { padding: 3rem; }
+        
+        .page-header {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-table-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="glass-panel row g-0">
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="text-center mb-5">
+                <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['a_name']); ?>&background=4158D0&color=fff&rounded=true" width="80">
+                <h5 class="mt-3"><?php echo $_SESSION['a_name']; ?></h5>
+            </div>
+
+            <div class="nav-menu">
+                <a href="index2.php" class="menu-item">
+                    <i class="fa-solid fa-house"></i> หน้าหลัก
+                </a>
+                <a href="products.php" class="menu-item">
+                    <i class="fa-solid fa-box"></i> จัดการสินค้า
+                </a>
+                <a href="order.php" class="menu-item active">
+                    <i class="fa-solid fa-cart-shopping"></i> จัดการออร์เดอร์
+                </a>
+                <a href="customer.php" class="menu-item">
+                    <i class="fa-solid fa-users"></i> จัดการลูกค้า
+                </a>
+                <a href="logout.php" class="menu-item text-danger mt-5">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-lg-10 content-area">
+            <div class="page-header">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-1">
+                            <li class="breadcrumb-item"><a href="index2.php" class="text-decoration-none">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Orders</li>
+                        </ol>
+                    </nav>
+                    <h2 class="mb-0 fw-bold"><i class="fa-solid fa-file-invoice-dollar me-2 text-primary"></i> จัดการออร์เดอร์</h2>
+                </div>
+                <button class="btn btn-primary rounded-pill px-4">
+                    <i class="fa-solid fa-plus me-2"></i> สร้างออร์เดอร์ใหม่
+                </button>
+            </div>
+
+            <div class="order-table-card">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>ลูกค้า</th>
+                                <th>วันที่</th>
+                                <th>ยอดรวม</th>
+                                <th>สถานะ</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ORD-001</td>
+                                <td>สมชาย มั่นคง</td>
+                                <td>03/02/2026</td>
+                                <td>฿1,500.00</td>
+                                <td><span class="status-badge bg-success-subtle text-success border border-success-subtle">ชำระเงินแล้ว</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
