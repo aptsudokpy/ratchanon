@@ -59,7 +59,7 @@
     <td><?php echo $data['p_id'];?></td>
     <td><?php echo $data['p_name'];?></td>
     <td><img src="images/<?php echo $data['p_id']; ?>.<?php echo $data['p_ext']; ?>" width="100"></td>
-    <td><?php echo $data['r_id'];?></td>
+    <td><?php echo $data['r_name'];?></td>
 </tr>
 <?php }  ?> 
 
